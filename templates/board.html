@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/style.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <title>/{{ board[0] }}/ - Flaskboard</title>
+  </head>
+  <body>
+	<h1><a href="/">Flaskboard</a> - /{{ board[0] }}/</h1>
+	<h2>{{ board[2] }}</h2>
+	<form action="/boards/{{ ident }}/threads/postthread" method="post">
+		<table>
+			<TR>
+			<TD>Thread subject:</TD>
+			<TD><input type="text" name="subject"></input></TD>
+			</TR>
+			<TR>
+			<TD>Post content:</TD>
+			</TR>
+		</table>
+		<textarea name="content" required></textarea>
+		<input type="submit" value="Create a thread">
+	</form>
+	<hr>
+	{% for i in posts %}
+	<table class="postbody">
+	<TR><TD class="postname"><b><a href="/boards/{{ ident }}/threads/{{ i[2]}}">Subject: {{ i[0] }}</a></b></TD></TR>
+	<TR><TD class="postcontent"><pre>{{ i[1] }}</pre></TD></TR>
+	</table>
+	{% endfor %}
+	<script src="{{ url_for('static', filename='scripts/main.js') }}"></script>	
+  </body>
+</html>

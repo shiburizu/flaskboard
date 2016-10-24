@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/style.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <title>{{ title }} - Flaskboard</title>
+  </head>
+  <body>
+	<h1><a href="/">Flaskboard</a> - <a href="/boards/{{ b }}">{{ b }}</a></h1>
+	<form action="/boards/{{ b }}/threads/postreply/{{ ident }}" method="post">
+		<table>
+			<TR>
+			<TD>Name: </TD>
+			<TD><input type="text" name="subject"></input></TD>
+			</TR>
+			<TR>
+			<TD>Reply content:</TD>
+			</TR>
+		</table>
+		<textarea name="content"></textarea>
+		<input type="submit" value="Post a reply">
+	</form>
+	<hr>
+		<table>
+			<TR><TD class="postname"><b>Subject: {{ op[0] }} | <a href="#{{ op[2] }}">ID: {{ op[2] }}</a></b></TD></TR>
+			<TR><TD class="postcontent">{{ op[1] }}</TD></TR>
+		</table>
+	<hr>
+	{% for i in posts %}
+		<table class="postbody" name="{{ i[2] }}">
+		<TR><TD class="postname"><b>Name: {{ i[0] }} | <a href="#{{ i[2]}}">ID: {{ i[2] }}</a></b></TD></TR>
+		<TR><TD class="postcontent"><pre>{{ i[1] }}</pre></TD></TR>
+		</table>
+	{% endfor %}
+	<script src="{{ url_for('static', filename='scripts/main.js') }}"></script>	
+  </body>
+</html>

@@ -1,0 +1,20 @@
+{
+	"boards": [
+		{
+			"name":"tech",
+			"desc":"Install Gentoo."
+		},
+		{
+			"name":"games",
+			"desc":"Discuss your vidya."
+		},
+		{
+			"name":"politics",
+			"desc":"Election year AGAIN?"
+		},
+		{
+			"name":"prog",
+			"desc":"Argue about which programming language is better."
+	}
+	]
+}
