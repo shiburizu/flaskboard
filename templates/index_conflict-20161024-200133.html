@@ -12,7 +12,7 @@
 	<hr>
 	{% for i in boardlist %}
 	<table class="boardrow">
-	<TR><TD><b><a class="boardname" href="boards/{{ i[0]}}">{{ i[0] }}</a></b></TD></TR>
+	<TR><TD class="boardname"><b><a href="boards/{{ i[0]}}">{{ i[0] }}</a></b></TD></TR>
 	<TR><TD class="postcontent">{{ i[2] }}</TD></TR>
 	</table>
 	{% endfor %}

@@ -10,25 +10,38 @@ body {
   width: 80%;
   margin: 10px auto;
   background-color: #FFFFFF;
-  padding: 0px 20px 20px 20px;
+  padding: 20px 20px 20px 20px;
   border: 5px solid black;
 }	
 form {
-  padding: 5px;
-  width: 50%;
-}
-textarea {
-  width: 98%;
-  resize: none;
-}
-.postbody {
-  border: 1px solid black;
-  margin: 3px;
   width: 100%;
 }
+textarea {
+  resize: none;
+  width: 100%;
+}
+.postbody, .boardrow {
+  border: 1px solid black;
+  margin: 0px 0px 10px;
+  box-shadow: 2px 2px 2px #888888;
+  width: 100%;
+  table-layout:fixed;
+  word-break: break-all;
+}
+.boardrow:hover {
+  background-color: #A5C6E0;
+}
 .postname {
-  font-size: 10px;
+  font-size: 14px;
+}
+.boardname {
+  font-size: 18px;
+  text-decoration: none !important;
 }
 .postcontent {
   font-size: 12px;
+  white-space: pre-wrap;
+}
+a {
+  color: #556775;
 }

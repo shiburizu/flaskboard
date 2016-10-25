@@ -29,8 +29,8 @@
 	<hr>
 	{% for i in posts %}
 		<table class="postbody" name="{{ i[2] }}">
-		<TR><TD class="postname"><b>Name: {{ i[0] }} | <a href="#{{ i[2]}}">ID: {{ i[2] }}</a></b></TD></TR>
-		<TR><TD class="postcontent"><pre>{{ i[1] }}</pre></TD></TR>
+		<TR><TD class="replyname"><b>Name: {{ i[0] }} | <a href="#{{ i[2]}}">ID: {{ i[2] }}</a></b></TD></TR>
+		<TR><TD class="postcontent">{{ i[1] }}</TD></TR>
 		</table>
 	{% endfor %}
 	<script src="{{ url_for('static', filename='scripts/main.js') }}"></script>	

@@ -19,14 +19,14 @@
 			<TD>Post content:</TD>
 			</TR>
 		</table>
-		<textarea name="content" required></textarea>
+		<textarea name="content" required rows=5></textarea>
 		<input type="submit" value="Create a thread">
 	</form>
 	<hr>
 	{% for i in posts %}
 	<table class="postbody">
-	<TR><TD class="postname"><b><a href="/boards/{{ ident }}/threads/{{ i[2]}}">Subject: {{ i[0] }}</a></b></TD></TR>
-	<TR><TD class="postcontent"><pre>{{ i[1] }}</pre></TD></TR>
+	<TR><TD><b><a class="postname" href="/boards/{{ ident }}/threads/{{ i[2]}}">Subject: {{ i[0] }}</a></b></TD></TR>
+	<TR><TD class="postcontent">{{ i[1] }}</TD></TR>
 	</table>
 	{% endfor %}
 	<script src="{{ url_for('static', filename='scripts/main.js') }}"></script>	
