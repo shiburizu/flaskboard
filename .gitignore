@@ -93,4 +93,7 @@ ENV/
 # Rope project settings
 .ropeproject
 
+# Flaskboard
+posts.db
+
 >>>>>>> f84cd7f270a42849fade171bf14b0ebcc2e4670b
