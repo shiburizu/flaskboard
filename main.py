@@ -33,8 +33,9 @@ def before_request():
 @app.teardown_request
 def teardown_request(exception):
 	if hasattr(g,'db'):
-		g.db.close()
-
+		#g.db.close()
+		pass
+		
 @app.route('/')
 def hello_world():
 	boardlist = g.db.execute("SELECT * FROM boards").fetchall()
