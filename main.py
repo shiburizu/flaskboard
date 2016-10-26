@@ -93,7 +93,7 @@ def postreply(b,ident):
 	except:
 		id = 0
 	print(id+1)
-	g.db.execute("INSERT INTO posts VALUES('%s','%s',%s,'%s','%s')" % (name,comment,int(id+1),str(b),str(ident)))
+	g.db.execute("INSERT INTO posts VALUES('%s','%s',%s,'%s',%s)" % (name,comment,int(id+1),str(b),ident))
 	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = '%s'" % b)
 	#g.db.commit()
 	return redirect("/boards/%s/threads/%s" % (str(b),str(ident)))
