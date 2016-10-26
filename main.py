@@ -21,19 +21,20 @@ for i in config["boards"]:
 	try:
 		board = c.execute("SELECT name FROM boards WHERE name = '%s'" % i["name"]).fetchall()[0][0]
 		c.execute("UPDATE boards SET description = '%s' WHERE name = '%s'" % (i["description"],i["name"]))
-		sql.commit()
+		c.commit()
 	except:
 		c.execute("INSERT INTO boards(name,description) VALUES('%s','%s')" % (i["name"],i["description"]))
-		sql.commit()
+		c.commit()
 
 @app.before_request
 def before_request():
-	g.db = sqlite3.connect("posts.db")
+	g.sql = SQLAlchemy(app)
+	g.db = g.db.engine
 
 @app.teardown_request
 def teardown_request(exception):
 	if hasattr(g,'db'):
-		g.db.close()
+		g.sql.close()
 
 @app.route('/')
 def hello_world():
