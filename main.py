@@ -76,7 +76,7 @@ def post(b):
 	g.db.execute("INSERT INTO threads VALUES('%s','%s','%s','%s')" % (name,comment,int(id+1),str(b)))
 	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = '%s'" % b)
 	g.db.commit()
-	return redirect('/boards/'%s'/threads/'%s'' % (str(b),str(id+1)))
+	return redirect("/boards/'%s'/threads/'%s'" % (str(b),str(id+1)))
 
 @app.route('/boards/<b>/threads/postreply/<ident>',methods=['POST'])
 def postreply(b,ident):
