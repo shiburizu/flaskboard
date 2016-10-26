@@ -53,10 +53,10 @@ def showboard(ident):
 @app.route('/boards/<b>/threads/<ident>')
 def showthread(ident,b):
 	try:
-		op = g.db.execute("SELECT name,post,id FROM threads WHERE id = %s AND board = '%s'", (ident,b)).fetchall()[0]
+		op = g.db.execute("SELECT name,post,id FROM threads WHERE id = %s AND board = %s", (ident,b)).fetchall()[0]
 		print(op)
-		posts = g.db.execute("SELECT * FROM posts WHERE parent = %s AND board = '%s'" % (ident,b)).fetchall()
-		title = g.db.execute("SELECT name FROM threads WHERE id = %s AND board = '%s'" % (ident,b)).fetchall()[0][0]
+		posts = g.db.execute("SELECT * FROM posts WHERE parent = %s AND board = %s" % (ident,b)).fetchall()
+		title = g.db.execute("SELECT name FROM threads WHERE id = %s AND board = %s" % (ident,b)).fetchall()[0][0]
 		return render_template('thread.html',title=title,posts=posts,ident=ident,op=op,b=b)
 	except Exception as e:
 		print(e)
