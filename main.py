@@ -11,7 +11,7 @@ sql = SQLAlchemy(app)
 c = sql.engine
 c.execute("CREATE TABLE IF NOT EXISTS threads(name VARCHAR(100), post VARCHAR(500),id INTEGER, board VARCHAR(20))")
 c.execute("CREATE TABLE IF NOT EXISTS posts(name VARCHAR(100), post VARCHAR(500), id INTEGER, board VARCHAR(20), parent VARCHAR(100))")
-c.execute("CREATE TABLE IF NOT EXISTS boards(name VARCHAR(100), postcount INTEGER DEFAULT 0, desc TEXT VARCHAR(100))")
+c.execute("CREATE TABLE IF NOT EXISTS boards(name VARCHAR(100), postcount INTEGER DEFAULT 0, desc VARCHAR(100))")
 boards = c.execute("SELECT name FROM boards").fetchall()
 with open('boards.json') as config_file:
 	config = json.load(config_file)
