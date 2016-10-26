@@ -3,7 +3,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 import json
 import os
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URI']
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 sql = SQLAlchemy(app)
 
 #sql = sqlite3.connect("posts.db")
