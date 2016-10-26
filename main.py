@@ -20,7 +20,7 @@ for i in config["boards"]:
 	print(i)
 	try:
 		board = c.execute("SELECT name FROM boards WHERE name = ?",(i["name"],)).fetchall()[0][0]
-		c.execute("UPDATE boards SET descriptionription = ? WHERE name = ?",(i["descriptionription"],i["name"]))
+		c.execute("UPDATE boards SET description = ? WHERE name = ?",(i["description"],i["name"]))
 		sql.commit()
 	except:
 		c.execute("INSERT INTO boards(name,description) VALUES(?,?)",(i["name"],i["description"]))
