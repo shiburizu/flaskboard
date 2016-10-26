@@ -58,7 +58,7 @@ def showthread(ident,b):
 		posts = g.db.execute("SELECT * FROM posts WHERE parent = %r AND board = %s" % (ident,b)).fetchall()
 		title = g.db.execute("SELECT name FROM threads WHERE id = %r AND board = %s" % (ident,b)).fetchall()[0][0]
 		return render_template('thread.html',title=title,posts=posts,ident=ident,op=op,b=b)
-	except Exeception as e:
+	except Exception as e:
 		print(e)
 		return "Thread not found."
 		
