@@ -55,8 +55,8 @@ def showthread(ident,b):
 	try:
 		op = g.db.execute("SELECT name,post,id FROM threads WHERE id = %r AND board = %s", (ident,b)).fetchall()[0]
 		print(op)
-		posts = g.db.execute("SELECT * FROM posts WHERE parent = %r AND board = %s" % (ident,b)).fetchall()
-		title = g.db.execute("SELECT name FROM threads WHERE id = %r AND board = %s" % (ident,b)).fetchall()[0][0]
+		posts = g.db.execute("SELECT * FROM posts WHERE parent = %i AND board = %s" % (ident,b)).fetchall()
+		title = g.db.execute("SELECT name FROM threads WHERE id = %i AND board = %s" % (ident,b)).fetchall()[0][0]
 		return render_template('thread.html',title=title,posts=posts,ident=ident,op=op,b=b)
 	except Exception as e:
 		print(e)
@@ -75,7 +75,7 @@ def post(b):
 	except:
 		id = 0
 	print(id+1)
-	g.db.execute("INSERT INTO threads VALUES('%s','%s',%s,'%s')" % (name,comment,int(id+1),str(b)))
+	g.db.execute("INSERT INTO threads VALUES('%s','%s',%i,'%s')" % (name,comment,int(id+1),str(b)))
 	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = '%s'" % b)
 	#g.db.commit()
 	return redirect("/boards/%s/threads/%s" % (str(b),str(id+1)))
@@ -93,7 +93,7 @@ def postreply(b,ident):
 	except:
 		id = 0
 	print(id+1)
-	g.db.execute("INSERT INTO posts VALUES('%s','%s',%s,'%s','%s')" % (name,comment,int(id+1),str(b),str(ident)))
+	g.db.execute("INSERT INTO posts VALUES('%s','%s',%i,'%s','%s')" % (name,comment,int(id+1),str(b),str(ident)))
 	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = '%s'" % b)
 	#g.db.commit()
 	return redirect("/boards/%s/threads/%s" % (str(b),str(ident)))
