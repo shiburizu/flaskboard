@@ -11,7 +11,7 @@ sql = SQLAlchemy(app)
 c = sql.engine
 c.execute("CREATE TABLE IF NOT EXISTS threads(name VARCHAR(100), post VARCHAR(500),id INT, board VARCHAR(20))")
 c.execute("CREATE TABLE IF NOT EXISTS posts(name VARCHAR(100), post VARCHAR(500), id INT, board VARCHAR(20), parent VARCHAR(100))")
-c.execute("CREATE TABLE IF NOT EXISTS boards(name VARCHAR(100), postcount INT, desc VARCHAR(100))")
+c.execute("CREATE TABLE IF NOT EXISTS boards(name VARCHAR(100), postcount INT, description VARCHAR(100))")
 c.execute("ALTER TABLE boards ALTER COLUMN postcount SET DEFAULT 0")
 boards = c.execute("SELECT name FROM boards").fetchall()
 with open('boards.json') as config_file:
@@ -20,10 +20,10 @@ for i in config["boards"]:
 	print(i)
 	try:
 		board = c.execute("SELECT name FROM boards WHERE name = ?",(i["name"],)).fetchall()[0][0]
-		c.execute("UPDATE boards SET desc = ? WHERE name = ?",(i["desc"],i["name"]))
+		c.execute("UPDATE boards SET descriptionription = ? WHERE name = ?",(i["descriptionription"],i["name"]))
 		sql.commit()
 	except:
-		c.execute("INSERT INTO boards(name,desc) VALUES(?,?)",(i["name"],i["desc"]))
+		c.execute("INSERT INTO boards(name,description) VALUES(?,?)",(i["name"],i["description"]))
 		sql.commit()
 
 @app.before_request

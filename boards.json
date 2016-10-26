@@ -2,19 +2,19 @@
 	"boards": [
 		{
 			"name":"tech",
-			"desc":"Install Gentoo."
+			"description":"Install Gentoo."
 		},
 		{
 			"name":"games",
-			"desc":"Discuss your vidya."
+			"description":"Discuss your vidya."
 		},
 		{
 			"name":"politics",
-			"desc":"Election year AGAIN?"
+			"description":"Election year AGAIN?"
 		},
 		{
 			"name":"prog",
-			"desc":"Argue about which programming language is better."
+			"description":"Argue about which programming language is better."
 		}
 	]
 }
