@@ -28,13 +28,12 @@ for i in config["boards"]:
 
 @app.before_request
 def before_request():
-	g.sql = SQLAlchemy(app)
-	g.db = g.db.engine
+	g.db = SQLAlchemy(app) 
 
 @app.teardown_request
 def teardown_request(exception):
 	if hasattr(g,'db'):
-		g.sql.close()
+		g.db.close()
 
 @app.route('/')
 def hello_world():
