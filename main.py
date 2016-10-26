@@ -1,11 +1,14 @@
 from flask import Flask, render_template, request, redirect, g
-import sqlite3
+from flask.ext.sqlalchemy import SQLAlchemy
 import json
 import os
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URI']
+sql = SQLAlchemy(app)
 
-sql = sqlite3.connect("posts.db")
-c = sql.cursor()
+#sql = sqlite3.connect("posts.db")
+#c = sql.cursor()
+c = sql.engine
 c.execute("CREATE TABLE IF NOT EXISTS threads(name TEXT, post TEXT,id INTEGER, board TEXT)")
 c.execute("CREATE TABLE IF NOT EXISTS posts(name TEXT, post TEXT, id INTEGER, board TEXT, parent TEXT)")
 c.execute("CREATE TABLE IF NOT EXISTS boards(name TEXT, postcount INTEGER DEFAULT 0, desc TEXT)")
