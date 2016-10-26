@@ -19,11 +19,11 @@ with open('boards.json') as config_file:
 for i in config["boards"]:
 	print(i)
 	try:
-		board = c.execute("SELECT name FROM boards WHERE name = %s" % i["name"]).fetchall()[0][0]
-		c.execute("UPDATE boards SET description = %s WHERE name = %s" % (i["description"],i["name"]))
+		board = c.execute("SELECT name FROM boards WHERE name = '%s'" % i["name"]).fetchall()[0][0]
+		c.execute("UPDATE boards SET description = '%s' WHERE name = '%s'" % (i["description"],i["name"]))
 		sql.commit()
 	except:
-		c.execute("INSERT INTO boards(name,description) VALUES(%s,%s)" % (i["name"],i["description"]))
+		c.execute("INSERT INTO boards(name,description) VALUES('%s','%s')" % (i["name"],i["description"]))
 		sql.commit()
 
 @app.before_request
@@ -43,8 +43,8 @@ def hello_world():
 @app.route('/boards/<ident>')
 def showboard(ident):
 	try:
-		board = g.db.execute("SELECT * FROM boards WHERE name = %s" % ident).fetchall()[0]
-		posts = g.db.execute("SELECT * FROM threads WHERE board = ?" % ident).fetchall()
+		board = g.db.execute("SELECT * FROM boards WHERE name = '%s'" % ident).fetchall()[0]
+		posts = g.db.execute("SELECT * FROM threads WHERE board = '%s'" % ident).fetchall()
 		return render_template('board.html',posts=posts,board=board,ident=ident)
 	except:
 		return "Board not found."
@@ -52,10 +52,10 @@ def showboard(ident):
 @app.route('/boards/<b>/threads/<ident>')
 def showthread(ident,b):
 	try:
-		op = g.db.execute("SELECT name,post,id FROM threads WHERE id = %s AND board = %s", (ident,b)).fetchall()[0]
+		op = g.db.execute("SELECT name,post,id FROM threads WHERE id = '%s' AND board = '%s'", (ident,b)).fetchall()[0]
 		print(op)
-		posts = g.db.execute("SELECT * FROM posts WHERE parent = %s AND board = %s" % (ident,b)).fetchall()
-		title = g.db.execute("SELECT name FROM threads WHERE id = %s AND board = %s" % (ident,b)).fetchall()[0][0]
+		posts = g.db.execute("SELECT * FROM posts WHERE parent = '%s' AND board = '%s'" % (ident,b)).fetchall()
+		title = g.db.execute("SELECT name FROM threads WHERE id = '%s' AND board = '%s'" % (ident,b)).fetchall()[0][0]
 		return render_template('thread.html',title=title,posts=posts,ident=ident,op=op,b=b)
 	except:
 		return "Thread not found."
@@ -69,14 +69,14 @@ def post(b):
 	print("Thread subject: " + name)
 	print("Thread content: " + comment)
 	try:
-		id = int(g.db.execute("SELECT postcount FROM boards WHERE name = %s" % b).fetchall()[0][0])
+		id = int(g.db.execute("SELECT postcount FROM boards WHERE name = '%s'" % b).fetchall()[0][0])
 	except:
 		id = 0
 	print(id+1)
-	g.db.execute("INSERT INTO threads VALUES(%s,%s,%s,%s)" % (name,comment,int(id+1),str(b)))
-	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = %s" % b)
+	g.db.execute("INSERT INTO threads VALUES('%s','%s','%s','%s')" % (name,comment,int(id+1),str(b)))
+	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = '%s'" % b)
 	g.db.commit()
-	return redirect('/boards/%s/threads/%s' % (str(b),str(id+1)))
+	return redirect('/boards/'%s'/threads/'%s'' % (str(b),str(id+1)))
 
 @app.route('/boards/<b>/threads/postreply/<ident>',methods=['POST'])
 def postreply(b,ident):
@@ -87,14 +87,14 @@ def postreply(b,ident):
 	print("Post name: " + name)
 	print("Post content: " + comment)
 	try:
-		id = int(g.db.execute("SELECT postcount FROM boards WHERE name = %s" % b).fetchall()[0][0])
+		id = int(g.db.execute("SELECT postcount FROM boards WHERE name = '%s'" % b).fetchall()[0][0])
 	except:
 		id = 0
 	print(id+1)
-	g.db.execute("INSERT INTO posts VALUES(%s,%s,%s,%s,%s)" % (name,comment,int(id+1),str(b),str(ident)))
-	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = %s" % b)
+	g.db.execute("INSERT INTO posts VALUES('%s','%s','%s','%s','%s')" % (name,comment,int(id+1),str(b),str(ident)))
+	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = '%s'" % b)
 	g.db.commit()
-	return redirect('/boards/%s/threads/%s' % (str(b),str(ident)))
+	return redirect("/boards/'%s'/threads/'%s'" % (str(b),str(ident)))
 
 if __name__ == '__main__':
 	port = int(os.environ.get('PORT', 5000))
