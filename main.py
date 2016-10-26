@@ -23,7 +23,7 @@ for i in config["boards"]:
 		c.execute("UPDATE boards SET description = %s WHERE name = %s" % (i["description"],i["name"]))
 		sql.commit()
 	except:
-		c.execute("INSERT INTO boards(name,description) VALUES(?,?)" % (i["name"],i["description"]))
+		c.execute("INSERT INTO boards(name,description) VALUES(%s,%s)" % (i["name"],i["description"]))
 		sql.commit()
 
 @app.before_request
