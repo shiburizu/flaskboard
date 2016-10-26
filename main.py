@@ -28,7 +28,7 @@ for i in config["boards"]:
 
 @app.before_request
 def before_request():
-	g.db = SQLAlchemy(app) 
+	g.db = SQLAlchemy(app).engine
 
 @app.teardown_request
 def teardown_request(exception):
