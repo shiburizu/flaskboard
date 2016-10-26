@@ -77,7 +77,7 @@ def post(b):
 	g.db.execute("INSERT INTO threads VALUES('%s','%s','%s','%s')" % (name,comment,int(id+1),str(b)))
 	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = '%s'" % b)
 	#g.db.commit()
-	return redirect("/boards/'%s'/threads/'%s'" % (str(b),str(id+1)))
+	return redirect("/boards/%s/threads/%s" % (str(b),str(id+1)))
 
 @app.route('/boards/<b>/threads/postreply/<ident>',methods=['POST'])
 def postreply(b,ident):
@@ -95,7 +95,7 @@ def postreply(b,ident):
 	g.db.execute("INSERT INTO posts VALUES('%s','%s','%s','%s','%s')" % (name,comment,int(id+1),str(b),str(ident)))
 	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = '%s'" % b)
 	#g.db.commit()
-	return redirect("/boards/'%s'/threads/'%s'" % (str(b),str(ident)))
+	return redirect("/boards/%s/threads/%s" % (str(b),str(ident)))
 
 if __name__ == '__main__':
 	port = int(os.environ.get('PORT', 5000))
