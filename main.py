@@ -46,6 +46,9 @@ def showboard(ident):
 	try:
 		board = g.db.execute("SELECT * FROM boards WHERE name = '%s'" % ident).fetchall()[0]
 		posts = g.db.execute("SELECT * FROM threads WHERE board = '%s'" % ident).fetchall()
+		for i in posts:
+			i[0] = i[0].replace('$_FLASKBOARD_CONTENT$','')
+			i[1] = i[1].replace('$_FLASKBOARD_CONTENT$','')
 		return render_template('board.html',posts=posts,board=board,ident=ident)
 	except:
 		return "Board not found."
@@ -57,6 +60,10 @@ def showthread(ident,b):
 		print(op)
 		try:
 			posts = g.db.execute("SELECT * FROM posts WHERE parent = %s AND board = '%s'" % (ident,b)).fetchall()
+			for i in posts:
+				i[0] = i[0].replace('$_FLASKBOARD_CONTENT$','')
+				i[1] = i[1].replace('$_FLASKBOARD_CONTENT$','')
+
 		except:
 			posts = []
 		title = g.db.execute("SELECT name FROM threads WHERE id = %s AND board = '%s'" % (ident,b)).fetchall()[0][0]
@@ -67,9 +74,9 @@ def showthread(ident,b):
 		
 @app.route('/boards/<b>/threads/postthread',methods=['POST'])
 def post(b):
-	name = request.form['subject']
-	comment = request.form['content']
-	if name.strip() == '':
+	name = "$_FLASKBOARD_CONTENT$" + request.form['subject'] + "$_FLASKBOARD_CONTENT$"
+	comment = "$_FLASKBOARD_CONTENT$" + request.form['content'] + "$_FLASKBOARD_CONTENT$"#fix ' insert
+	if name.strip().replace("$_FLASKBOARD_CONTENT$","") == '':
 		name = "Anonymous Thread"
 	print("Thread subject: " + name)
 	print("Thread content: " + comment)
@@ -85,9 +92,9 @@ def post(b):
 
 @app.route('/boards/<b>/threads/postreply/<ident>',methods=['POST'])
 def postreply(b,ident):
-	name = request.form['subject']
-	comment = request.form['content']
-	if name.strip() == '':
+	name = "$_FLASKBOARD_CONTENT$" + request.form['subject'] + "$_FLASKBOARD_CONTENT$"
+	comment = "$_FLASKBOARD_CONTENT$" + request.form['content'] + "$_FLASKBOARD_CONTENT$"#fix ' insert
+	if name.strip().replace("$_FLASKBOARD_CONTENT$","") == '':
 		name = "Anonymous"
 	print("Post name: " + name)
 	print("Post content: " + comment)
