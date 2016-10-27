@@ -19,11 +19,15 @@ with open('boards.json') as config_file:
 for i in config["boards"]:
 	print(i)
 	try:
-		board = c.execute("SELECT name FROM boards WHERE name = '%s'" % i["name"]).fetchall()[0][0]
-		c.execute("UPDATE boards SET description = '%s' WHERE name = '%s'" % (i["description"],i["name"]))
+		name = '$_FLASKBOARD_CONTENT$' + i["name"] + '$_FLASKBOARD_CONTENT$'
+		desc = '$_FLASKBOARD_CONTENT$' + i["description"] + '$_FLASKBOARD_CONTENT$'
+		board = c.execute("SELECT name FROM boards WHERE name = %s" % name).fetchall()[0][0]
+		c.execute("UPDATE boards SET description = '%s' WHERE name = %s" % (desc,name))
 		#c.commit()
 	except:
-		c.execute("INSERT INTO boards(name,description) VALUES('%s','%s')" % (i["name"],i["description"]))
+		name = '$_FLASKBOARD_CONTENT$' + i["name"] + '$_FLASKBOARD_CONTENT$'
+		desc = '$_FLASKBOARD_CONTENT$' + i["description"] + '$_FLASKBOARD_CONTENT$'
+		c.execute("INSERT INTO boards(name,description) VALUES(%s,%s)" % (name,desc))
 		#c.commit()
 
 @app.before_request
@@ -39,6 +43,9 @@ def teardown_request(exception):
 @app.route('/')
 def hello_world():
 	boardlist = g.db.execute("SELECT * FROM boards").fetchall()
+	for i in boardlist:
+		i[0] = i[0].replace('$_FLASKBOARD_CONTENT$','')
+		i[1] = i[1].replace('$_FLASKBOARD_CONTENT$','')
 	return render_template('index.html',boardlist=boardlist)
 	
 @app.route('/boards/<ident>')
@@ -85,7 +92,7 @@ def post(b):
 	except:
 		id = 0
 	print(id+1)
-	g.db.execute("INSERT INTO threads VALUES('%s','%s',%s,'%s')" % (name,comment,int(id+1),str(b)))
+	g.db.execute("INSERT INTO threads VALUES(%s,%s,%s,'%s')" % (name,comment,int(id+1),str(b)))
 	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = '%s'" % b)
 	#g.db.commit()
 	return redirect("/boards/%s/threads/%s" % (str(b),str(id+1)))
@@ -103,7 +110,7 @@ def postreply(b,ident):
 	except:
 		id = 0
 	print(id+1)
-	g.db.execute("INSERT INTO posts VALUES('%s','%s',%s,'%s',%s)" % (name,comment,int(id+1),str(b),ident))
+	g.db.execute("INSERT INTO posts VALUES(%s,%s,%s,'%s',%s)" % (name,comment,int(id+1),str(b),ident))
 	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = '%s'" % b)
 	#g.db.commit()
 	return redirect("/boards/%s/threads/%s" % (str(b),str(ident)))
