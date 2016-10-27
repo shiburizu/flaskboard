@@ -45,7 +45,7 @@ def hello_world():
 	boardlist = g.db.execute("SELECT name,description FROM boards").fetchall()
 	returnboards = []
 	for i in boardlist:
-		returnboards.append([i[0].replace('$_FLASKBOARD_CONTENT$','') + i[1].replace('$_FLASKBOARD_CONTENT$','')])
+		returnboards.append([i[0].replace('$_FLASKBOARD_CONTENT$',''), i[1].replace('$_FLASKBOARD_CONTENT$','')])
 	return render_template('index.html',boardlist=returnboards)
 	
 @app.route('/boards/<ident>')
