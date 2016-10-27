@@ -55,7 +55,7 @@ def showboard(ident):
 		board = g.db.execute("SELECT name,description FROM boards WHERE name = %s" % realident).fetchall()
 		realboard = []
 		for i in board:
-			realboard.append([i[0],i[1].replace('$_FLASKBOARD_CONTENT$','')])
+			realboard.append([i[0][0],i[0][1].replace('$_FLASKBOARD_CONTENT$','')])
 		posts = g.db.execute("SELECT name,post FROM threads WHERE board = %s" % realident).fetchall()
 		realpost = []
 		for i in posts:
