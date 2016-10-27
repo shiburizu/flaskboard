@@ -99,7 +99,7 @@ def post(b):
 		id = 0
 	print(id+1)
 	g.db.execute("INSERT INTO threads VALUES(%s,%s,%s,'%s')" % (name,comment,int(id+1),sqlb))
-	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = %s" % b)
+	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = %s" % sqlb)
 	#g.db.commit()
 	return redirect("/boards/%s/threads/%s" % (str(b),str(id+1)))
 
