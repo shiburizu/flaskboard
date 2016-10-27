@@ -79,6 +79,7 @@ def showthread(ident,b):
 			posts = g.db.execute("SELECT * FROM posts WHERE parent = %s AND board = %s" % (ident,sqlb)).fetchall()
 		except:
 			posts = []
+		print(posts)
 		return render_template('thread.html',title=op[0],posts=posts,ident=ident,op=op,b=b)
 	except TypeError as e:
 		print(e)
