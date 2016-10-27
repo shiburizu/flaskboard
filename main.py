@@ -74,7 +74,7 @@ def showthread(ident,b):
 	sqlb = "$_FLASKBOARD_CONTENT$" + b + "$_FLASKBOARD_CONTENT$"
 	realident = "$_FLASKBOARD_CONTENT$" + ident + "$_FLASKBOARD_CONTENT$"
 	try:
-		op = g.db.execute("SELECT name,post,id FROM threads WHERE id = %s AND board = %s" % (ident,sqlb)).fetchall()[0]
+		op = g.db.execute("SELECT name,post,id FROM threads WHERE id = %s AND board = %s" % (ident,sqlb)).fetchall()
 		try:
 			posts = g.db.execute("SELECT * FROM posts WHERE parent = %s AND board = %s" % (ident,sqlb)).fetchall()
 		except Exception as e:
@@ -82,7 +82,7 @@ def showthread(ident,b):
 			print(e)
 		print(posts)
 		return render_template('thread.html',title=op[0],posts=posts,ident=ident,op=op,b=b)
-	except TypeError as e:
+	except Exception as e:
 		print(e)
 		return "Thread not found."
 		
