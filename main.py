@@ -67,10 +67,6 @@ def showthread(ident,b):
 		print(op)
 		try:
 			posts = g.db.execute("SELECT * FROM posts WHERE parent = %s AND board = '%s'" % (ident,b)).fetchall()
-			for i in posts:
-				i[0] = str(i[0]).replace('$_FLASKBOARD_CONTENT$','')
-				i[1] = str(i[1]).replace('$_FLASKBOARD_CONTENT$','')
-
 		except:
 			posts = []
 		title = g.db.execute("SELECT name FROM threads WHERE id = %s AND board = '%s'" % (ident,b)).fetchall()[0][0]
