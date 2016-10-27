@@ -71,14 +71,16 @@ def showboard(ident):
 	
 @app.route('/boards/<b>/threads/<ident>')
 def showthread(ident,b):
+	sqlb = "$_FLASKBOARD_CONTENT$" + b + "$_FLASKBOARD_CONTENT$"
+	realident = "$_FLASKBOARD_CONTENT$" + ident + "$_FLASKBOARD_CONTENT$"
 	try:
-		op = g.db.execute("SELECT name,post,id FROM threads WHERE id = %s AND board = %s", (ident,b)).fetchall()[0]
+		op = g.db.execute("SELECT name,post,id FROM threads WHERE id = %s AND board = %s", (realident,sqlb)).fetchall()[0]
 		print(op)
 		try:
-			posts = g.db.execute("SELECT * FROM posts WHERE parent = %s AND board = %s" % (ident,b)).fetchall()
+			posts = g.db.execute("SELECT * FROM posts WHERE parent = %s AND board = %s" % (realident,sqlb)).fetchall()
 		except:
 			posts = []
-		title = g.db.execute("SELECT name FROM threads WHERE id = %s AND board = %s" % (ident,b)).fetchall()[0][0]
+		title = g.db.execute("SELECT name FROM threads WHERE id = %s AND board = %s" % (realident,sqlb)).fetchall()[0][0]
 		return render_template('thread.html',title=title,posts=posts,ident=ident,op=op,b=b)
 	except Exception as e:
 		print(e)
