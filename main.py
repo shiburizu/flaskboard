@@ -53,9 +53,6 @@ def showboard(ident):
 	try:
 		board = g.db.execute("SELECT * FROM boards WHERE name = '%s'" % ident).fetchall()[0]
 		posts = g.db.execute("SELECT * FROM threads WHERE board = '%s'" % ident).fetchall()
-		for i in posts:
-			i[0] = str(i[0]).replace('$_FLASKBOARD_CONTENT$','')
-			i[1] = str(i[1]).replace('$_FLASKBOARD_CONTENT$','')
 		return render_template('board.html',posts=posts,board=board,ident=ident)
 	except:
 		return "Board not found."
