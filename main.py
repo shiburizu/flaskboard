@@ -44,8 +44,8 @@ def teardown_request(exception):
 def hello_world():
 	boardlist = g.db.execute("SELECT * FROM boards").fetchall()
 	for i in boardlist:
-		i[0] = i[0].replace('$_FLASKBOARD_CONTENT$','')
-		i[1] = i[1].replace('$_FLASKBOARD_CONTENT$','')
+		i[0] = str(i[0]).replace('$_FLASKBOARD_CONTENT$','')
+		i[1] = str(i[1]).replace('$_FLASKBOARD_CONTENT$','')
 	return render_template('index.html',boardlist=boardlist)
 	
 @app.route('/boards/<ident>')
@@ -54,8 +54,8 @@ def showboard(ident):
 		board = g.db.execute("SELECT * FROM boards WHERE name = '%s'" % ident).fetchall()[0]
 		posts = g.db.execute("SELECT * FROM threads WHERE board = '%s'" % ident).fetchall()
 		for i in posts:
-			i[0] = i[0].replace('$_FLASKBOARD_CONTENT$','')
-			i[1] = i[1].replace('$_FLASKBOARD_CONTENT$','')
+			i[0] = str(i[0]).replace('$_FLASKBOARD_CONTENT$','')
+			i[1] = str(i[1]).replace('$_FLASKBOARD_CONTENT$','')
 		return render_template('board.html',posts=posts,board=board,ident=ident)
 	except:
 		return "Board not found."
@@ -68,8 +68,8 @@ def showthread(ident,b):
 		try:
 			posts = g.db.execute("SELECT * FROM posts WHERE parent = %s AND board = '%s'" % (ident,b)).fetchall()
 			for i in posts:
-				i[0] = i[0].replace('$_FLASKBOARD_CONTENT$','')
-				i[1] = i[1].replace('$_FLASKBOARD_CONTENT$','')
+				i[0] = str(i[0]).replace('$_FLASKBOARD_CONTENT$','')
+				i[1] = str(i[1]).replace('$_FLASKBOARD_CONTENT$','')
 
 		except:
 			posts = []
@@ -87,6 +87,7 @@ def post(b):
 		name = "Anonymous Thread"
 	print("Thread subject: " + name)
 	print("Thread content: " + comment)
+	b = "$_FLASKBOARD_CONTENT$" + b + "$_FLASKBOARD_CONTENT$"
 	try:
 		id = int(g.db.execute("SELECT postcount FROM boards WHERE name = '%s'" % b).fetchall()[0][0])
 	except:
@@ -105,6 +106,7 @@ def postreply(b,ident):
 		name = "Anonymous"
 	print("Post name: " + name)
 	print("Post content: " + comment)
+	b = "$_FLASKBOARD_CONTENT$" + b + "$_FLASKBOARD_CONTENT$"
 	try:
 		id = int(g.db.execute("SELECT postcount FROM boards WHERE name = '%s'" % b).fetchall()[0][0])
 	except:
