@@ -42,14 +42,17 @@ def teardown_request(exception):
 		
 @app.route('/')
 def hello_world():
-	boardlist = g.db.execute("SELECT * FROM boards").fetchall()
-	return render_template('index.html',boardlist=boardlist)
+	boardlist = g.db.execute("SELECT name,description FROM boards").fetchall()
+	returnboards = []
+	for i in boardlist:
+		returnboards.append(["$_FLASKBOARD_CONTENT$" + i[0] + "$_FLASKBOARD_CONTENT$","$_FLASKBOARD_CONTENT$" + i[1] + "$_FLASKBOARD_CONTENT$"])
+	return render_template('index.html',boardlist=returnboards)
 	
 @app.route('/boards/<ident>')
 def showboard(ident):
 	try:
-		board = g.db.execute("SELECT * FROM boards WHERE name = '%s'" % ident).fetchall()[0]
-		posts = g.db.execute("SELECT * FROM threads WHERE board = '%s'" % ident).fetchall()
+		board = g.db.execute("SELECT * FROM boards WHERE name = %s" % ident).fetchall()[0]
+		posts = g.db.execute("SELECT * FROM threads WHERE board = %s" % ident).fetchall()
 		return render_template('board.html',posts=posts,board=board,ident=ident)
 	except:
 		return "Board not found."
@@ -60,10 +63,10 @@ def showthread(ident,b):
 		op = g.db.execute("SELECT name,post,id FROM threads WHERE id = %s AND board = %s", (ident,b)).fetchall()[0]
 		print(op)
 		try:
-			posts = g.db.execute("SELECT * FROM posts WHERE parent = %s AND board = '%s'" % (ident,b)).fetchall()
+			posts = g.db.execute("SELECT * FROM posts WHERE parent = %s AND board = %s" % (ident,b)).fetchall()
 		except:
 			posts = []
-		title = g.db.execute("SELECT name FROM threads WHERE id = %s AND board = '%s'" % (ident,b)).fetchall()[0][0]
+		title = g.db.execute("SELECT name FROM threads WHERE id = %s AND board = %s" % (ident,b)).fetchall()[0][0]
 		return render_template('thread.html',title=title,posts=posts,ident=ident,op=op,b=b)
 	except Exception as e:
 		print(e)
@@ -77,14 +80,14 @@ def post(b):
 		name = "Anonymous Thread"
 	print("Thread subject: " + name)
 	print("Thread content: " + comment)
-	b = "$_FLASKBOARD_CONTENT$" + b + "$_FLASKBOARD_CONTENT$"
+	sqlb = "$_FLASKBOARD_CONTENT$" + b + "$_FLASKBOARD_CONTENT$"
 	try:
-		id = int(g.db.execute("SELECT postcount FROM boards WHERE name = '%s'" % b).fetchall()[0][0])
+		id = int(g.db.execute("SELECT postcount FROM boards WHERE name = %s" % sqlb).fetchall()[0][0])
 	except:
 		id = 0
 	print(id+1)
-	g.db.execute("INSERT INTO threads VALUES(%s,%s,%s,'%s')" % (name,comment,int(id+1),str(b)))
-	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = '%s'" % b)
+	g.db.execute("INSERT INTO threads VALUES(%s,%s,%s,'%s')" % (name,comment,int(id+1),sqlb))
+	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = %s" % b)
 	#g.db.commit()
 	return redirect("/boards/%s/threads/%s" % (str(b),str(id+1)))
 
@@ -96,14 +99,14 @@ def postreply(b,ident):
 		name = "Anonymous"
 	print("Post name: " + name)
 	print("Post content: " + comment)
-	b = "$_FLASKBOARD_CONTENT$" + b + "$_FLASKBOARD_CONTENT$"
+	sqlb = "$_FLASKBOARD_CONTENT$" + b + "$_FLASKBOARD_CONTENT$"
 	try:
-		id = int(g.db.execute("SELECT postcount FROM boards WHERE name = '%s'" % b).fetchall()[0][0])
+		id = int(g.db.execute("SELECT postcount FROM boards WHERE name = %s" % sqlb).fetchall()[0][0])
 	except:
 		id = 0
 	print(id+1)
-	g.db.execute("INSERT INTO posts VALUES(%s,%s,%s,'%s',%s)" % (name,comment,int(id+1),str(b),ident))
-	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = '%s'" % b)
+	g.db.execute("INSERT INTO posts VALUES(%s,%s,%s,'%s',%s)" % (name,comment,int(id+1),sqlb,ident))
+	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = %s" % b)
 	#g.db.commit()
 	return redirect("/boards/%s/threads/%s" % (str(b),str(ident)))
 
