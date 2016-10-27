@@ -43,9 +43,6 @@ def teardown_request(exception):
 @app.route('/')
 def hello_world():
 	boardlist = g.db.execute("SELECT * FROM boards").fetchall()
-	for i in boardlist:
-		i[0] = str(i[0]).replace('$_FLASKBOARD_CONTENT$','')
-		i[1] = str(i[1]).replace('$_FLASKBOARD_CONTENT$','')
 	return render_template('index.html',boardlist=boardlist)
 	
 @app.route('/boards/<ident>')
