@@ -61,7 +61,7 @@ def showboard(ident):
 		for i in posts:
 			realpost.append([i[0].replace('$_FLASKBOARD_CONTENT$',''), i[1].replace('$_FLASKBOARD_CONTENT$','')])
 		return render_template('board.html',posts=realpost,board=realboard,ident=ident)
-		print(board)s
+		print(board)
 	except:
 		return "Board not found."
 	
