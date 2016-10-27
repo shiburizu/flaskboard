@@ -51,8 +51,9 @@ def hello_world():
 @app.route('/boards/<ident>')
 def showboard(ident):
 	try:
-		board = g.db.execute("SELECT * FROM boards WHERE name = %s" % ident).fetchall()[0]
-		posts = g.db.execute("SELECT * FROM threads WHERE board = %s" % ident).fetchall()
+		realident = "$_FLASKBOARD_CONTENT$" + ident + "$_FLASKBOARD_CONTENT$"
+		board = g.db.execute("SELECT * FROM boards WHERE name = %s" % realident).fetchall()[0]
+		posts = g.db.execute("SELECT * FROM threads WHERE board = %s" % realident).fetchall()
 		return render_template('board.html',posts=posts,board=board,ident=ident)
 	except:
 		return "Board not found."
