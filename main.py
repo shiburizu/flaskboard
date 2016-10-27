@@ -75,15 +75,11 @@ def showthread(ident,b):
 	realident = "$_FLASKBOARD_CONTENT$" + ident + "$_FLASKBOARD_CONTENT$"
 	try:
 		op = g.db.execute("SELECT name,post,id FROM threads WHERE id = %s AND board = %s", (ident,sqlb)).fetchall()[0]
-		print(op)
 		try:
 			posts = g.db.execute("SELECT * FROM posts WHERE parent = %s AND board = %s" % (ident,sqlb)).fetchall()
-			print(posts)
 		except:
 			posts = []
-		title = g.db.execute("SELECT name FROM threads WHERE id = %s AND board = %s" % (ident,sqlb)).fetchall()
-		print(title)
-		return render_template('thread.html',title=title,posts=posts,ident=ident,op=op,b=b)
+		return render_template('thread.html',title=op[0],posts=posts,ident=ident,op=op,b=b)
 	except TypeError as e:
 		print(e)
 		return "Thread not found."
@@ -91,7 +87,7 @@ def showthread(ident,b):
 @app.route('/boards/<b>/threads/postthread',methods=['POST'])
 def post(b):
 	name = "$_FLASKBOARD_CONTENT$" + request.form['subject'] + "$_FLASKBOARD_CONTENT$"
-	comment = "$_FLASKBOARD_CONTENT$" + request.form['content'] + "$_FLASKBOARD_CONTENT$"#fix ' insert
+	comment = "$_FLASKBOARD_CONTENT$" + request.form['content'] + "$_FLASKBOARD_CONTENT$"
 	if name.strip().replace("$_FLASKBOARD_CONTENT$","") == '':
 		name = "Anonymous Thread"
 	print("Thread subject: " + name)
