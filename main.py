@@ -112,6 +112,7 @@ def postreply(b,ident):
 	print("Post name: " + name)
 	print("Post content: " + comment)
 	sqlb = "$_FLASKBOARD_CONTENT$" + b + "$_FLASKBOARD_CONTENT$"
+	realident = "$_FLASKBOARD_CONTENT$" + ident + "$_FLASKBOARD_CONTENT$"
 	try:
 		id = int(g.db.execute("SELECT postcount FROM boards WHERE name = %s" % sqlb).fetchall()[0][0])
 	except:
