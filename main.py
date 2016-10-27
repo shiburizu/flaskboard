@@ -81,7 +81,7 @@ def showthread(ident,b):
 			print(posts)
 		except:
 			posts = []
-		title = g.db.execute("SELECT name FROM threads WHERE id = %s AND board = %s" % (ident,sqlb)).fetchall()[0][0]
+		title = g.db.execute("SELECT name FROM threads WHERE id = %s AND board = %s" % (ident,sqlb)).fetchall()[0]
 		print(title)
 		return render_template('thread.html',title=title,posts=posts,ident=ident,op=op,b=b)
 	except Exception as e:
