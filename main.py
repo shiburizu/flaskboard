@@ -108,7 +108,7 @@ def postreply(b,ident):
 	name = "$_FLASKBOARD_CONTENT$" + request.form['subject'] + "$_FLASKBOARD_CONTENT$"
 	comment = "$_FLASKBOARD_CONTENT$" + request.form['content'] + "$_FLASKBOARD_CONTENT$"#fix ' insert
 	if name.strip().replace("$_FLASKBOARD_CONTENT$","") == '':
-		name = "Anonymous"
+		name = "$_FLASKBOARD_CONTENT$Anonymous$_FLASKBOARD_CONTENT$"
 	print("Post name: " + name)
 	print("Post content: " + comment)
 	sqlb = "$_FLASKBOARD_CONTENT$" + b + "$_FLASKBOARD_CONTENT$"
