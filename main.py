@@ -52,7 +52,7 @@ def hello_world():
 def showboard(ident):
 	try:
 		realident = "$_FLASKBOARD_CONTENT$" + ident + "$_FLASKBOARD_CONTENT$"
-		board = g.db.execute("SELECT name,description FROM boards WHERE name = %s" % realident).fetchall()[0]
+		board = g.db.execute("SELECT name,description FROM boards WHERE name = %s" % realident).fetchall()
 		realboard = []
 		for i in board:
 			realboard.append([i[0],i[1].replace('$_FLASKBOARD_CONTENT$','')])
