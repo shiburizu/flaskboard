@@ -6,8 +6,6 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 sql = SQLAlchemy(app)
 
-#sql = sqlite3.connect("posts.db")
-#c = sql.cursor()
 c = sql.engine
 c.execute("CREATE TABLE IF NOT EXISTS threads(name VARCHAR(140), post VARCHAR(540),id INT, board VARCHAR(140))")
 c.execute("CREATE TABLE IF NOT EXISTS posts(name VARCHAR(140), post VARCHAR(540), id INT, board VARCHAR(140), parent INT)")
@@ -23,12 +21,10 @@ for i in config["boards"]:
 		desc = '$_FLASKBOARD_CONTENT$' + i["description"] + '$_FLASKBOARD_CONTENT$'
 		board = c.execute("SELECT name FROM boards WHERE name = %s" % name).fetchall()[0][0]
 		c.execute("UPDATE boards SET description = '%s' WHERE name = %s" % (desc,name))
-		#c.commit()
 	except:
 		name = '$_FLASKBOARD_CONTENT$' + i["name"] + '$_FLASKBOARD_CONTENT$'
 		desc = '$_FLASKBOARD_CONTENT$' + i["description"] + '$_FLASKBOARD_CONTENT$'
 		c.execute("INSERT INTO boards(name,description) VALUES(%s,%s)" % (name,desc))
-		#c.commit()
 
 @app.before_request
 def before_request():
