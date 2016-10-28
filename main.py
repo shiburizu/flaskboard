@@ -85,9 +85,9 @@ def showthread(ident,b):
 @app.route('/boards/<b>/threads/postthread',methods=['POST'])
 def post(b):
 	name = "$_FLASKBOARD_CONTENT$" + request.form['subject'] + "$_FLASKBOARD_CONTENT$"
-	comment = "$_FLASKBOARD_CONTENT$" + request.form['content'] + "$_FLASKBOARD_CONTENT$"
+	comment = "$_FLASKBOARD_CONTENT$" + request.form['content'].replace("$_FLASKBOARD_CONTENT$","") + "$_FLASKBOARD_CONTENT$"
 	if name.strip().replace("$_FLASKBOARD_CONTENT$","") == '':
-		name = "Anonymous Thread"
+		name = "$_FLASKBOARD_CONTENT$Anonymous Thread$_FLASKBOARD_CONTENT$"
 	print("Thread subject: " + name)
 	print("Thread content: " + comment)
 	sqlb = "$_FLASKBOARD_CONTENT$" + b + "$_FLASKBOARD_CONTENT$"
@@ -104,7 +104,7 @@ def post(b):
 @app.route('/boards/<b>/threads/postreply/<ident>',methods=['POST'])
 def postreply(b,ident):
 	name = "$_FLASKBOARD_CONTENT$" + request.form['subject'] + "$_FLASKBOARD_CONTENT$"
-	comment = "$_FLASKBOARD_CONTENT$" + request.form['content'] + "$_FLASKBOARD_CONTENT$"#fix ' insert
+	comment = "$_FLASKBOARD_CONTENT$" + request.form['content'].replace("$_FLASKBOARD_CONTENT$","") + "$_FLASKBOARD_CONTENT$"#fix ' insert
 	if name.strip().replace("$_FLASKBOARD_CONTENT$","") == '':
 		name = "$_FLASKBOARD_CONTENT$Anonymous$_FLASKBOARD_CONTENT$"
 	print("Post name: " + name)
