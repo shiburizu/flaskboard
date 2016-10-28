@@ -57,11 +57,11 @@ def showboard(ident):
 		for i in board:
 			realboard.append(i[0])
 			realboard.append(i[1].replace('$_FLASKBOARD_CONTENT$',''))
-		posts = g.db.execute("SELECT name,post FROM threads WHERE board = '%s'" % realident).fetchall()
+		posts = g.db.execute("SELECT name,post,id FROM threads WHERE board = '%s'" % realident).fetchall()
 		print(posts)
 		realpost = []
 		for i in posts:
-			realpost.append([i[0].replace('$_FLASKBOARD_CONTENT$',''),i[1].replace('$_FLASKBOARD_CONTENT$','')])
+			realpost.append([i[0].replace('$_FLASKBOARD_CONTENT$',''),i[1].replace('$_FLASKBOARD_CONTENT$',''),i[2]])
 		print(board)
 		print(realboard)
 		return render_template('board.html',posts=realpost,board=realboard,ident=ident)
