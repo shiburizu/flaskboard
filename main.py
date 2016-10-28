@@ -42,7 +42,7 @@ def teardown_request(exception):
 		
 @app.route('/')
 def hello_world():
-	boardlist = g.db.execute("SELECT name,description FROM boards").fetchall()
+	boardlist = g.db.execute("SELECT name,description FROM boards ORDER BY name ASC").fetchall()
 	returnboards = []
 	for i in boardlist:
 		returnboards.append([i[0].replace('$_FLASKBOARD_CONTENT$',''), i[1].replace('$_FLASKBOARD_CONTENT$','')])
