@@ -1,1 +1,4 @@
-document.getElementById(window.location.hash).scrollIntoView()
+function scrollToAnchor() {
+	document.getElementById(window.location.hash).scrollIntoView();
+}
+

@@ -6,7 +6,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
     <title>{{ title }} - Flaskboard</title>
   </head>
-  <body>
+  <body onload="scrollToAnchor()">
 	<h1><a href="/">Flaskboard</a> - <a href="/boards/{{ b }}">{{ b }}</a></h1>
 	<form action="/boards/{{ b }}/threads/postreply/{{ ident }}" method="post">
 		<table>
