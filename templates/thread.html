@@ -23,13 +23,13 @@
 	</form>
 	<hr>
 		<table>
-			<TR><TD class="postname"><b>Subject: {{ op[0] }} | <a id="{{ op[2] }}" href="#{{ op[2] }}">ID: {{ op[2] }}</a></b></TD></TR>
+			<TR><TD class="postname"><b>Subject: {{ op[0] }} | <a id="#{{ op[2] }}" href="#{{ op[2] }}">ID: {{ op[2] }}</a></b></TD></TR>
 			<TR><TD class="postcontent">{{ op[1] }}</TD></TR>
 		</table>
 	<hr>
 	{% for i in posts %}
 		<table class="postbody" name="{{ i[2] }}">
-		<TR><TD class="replyname"><b>Name: {{ i[0] }} | <a id = "{{ i[2]}}" href="#{{ i[2]}}">ID: {{ i[2] }}</a></b></TD></TR>
+		<TR><TD class="replyname"><b>Name: {{ i[0] }} | <a id = "#{{ i[2]}}" href="#{{ i[2]}}">ID: {{ i[2] }}</a></b></TD></TR>
 		<TR><TD class="postcontent">{{ i[1] }}</TD></TR>
 		</table>
 	{% endfor %}
