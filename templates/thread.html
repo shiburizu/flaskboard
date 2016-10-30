@@ -5,8 +5,10 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/style.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
     <title>{{ title }} - Flaskboard</title>
+	<script src="{{ url_for('static', filename='scripts/main.js') }}"></script>	
+
   </head>
-  <body>
+  <body onload="load()">
 	<h1><a href="/">Flaskboard</a> - <a href="/boards/{{ b }}">{{ b }}</a></h1>
 	<form action="/boards/{{ b }}/threads/postreply/{{ ident }}" method="post">
 		<table>
@@ -33,6 +35,5 @@
 		<TR><TD class="postcontent">{{ i[1] }}</TD></TR>
 		</table>
 	{% endfor %}
-	<script src="{{ url_for('static', filename='scripts/main.js') }}"></script>	
   </body>
 </html>
