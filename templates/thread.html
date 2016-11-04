@@ -38,7 +38,7 @@
 		<table class="postbody" name="{{ i[3] }}">
 		<TR><TD class="replyname"><b>Name: {{ i[0] }} | <a id = "#{{ i[3]}}" href="#{{ i[3]}}">ID: {{ i[3] }}</a></b></TD></TR>
 		{% if i[2] != '' %}
-		<TR><TD class="postattachment"><a href="{{ i[2] }}">{{ i[2] }}</a></TD></TR>
+		<TR><TD class="postattachment"><a href="{{ ''.join(['http://', i[2]]) }}">{{ i[2] }}</a></TD></TR>
 		{% endif %}
 		<TR><TD class="postcontent">{{ i[1] }}</TD></TR>
 		</table>
