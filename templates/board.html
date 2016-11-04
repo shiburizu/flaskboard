@@ -30,6 +30,9 @@
 	{% for i in posts %}
 	<table class="postbody">
 	<TR><TD><b><a class="postname" href="/boards/{{ ident }}/threads/{{ i[3]}}">Subject: {{ i[0] }}</a></b></TD></TR>
+	{% if i[2] != '' %}
+	<TR><TD class="postattachment"><a href="{{ i[2] }}">{{ i[2] }}</a></TD></TR>
+	{% endif %}
 	<TR><TD class="postcontent">{{ i[1] }}</TD></TR>
 	</table>
 	{% endfor %}
