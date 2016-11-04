@@ -27,9 +27,9 @@
 	</form>
 	<hr>
 		<table>
-			<TR><TD class="postname"><b>Subject: {{ op[0] }} | <a id="#{{ op[3] }}" href="#{{ op[3] }}">ID: {{ op[2] }}</a></b></TD></TR>
+			<TR><TD class="postname"><b>Subject: {{ op[0] }} | <a id="#{{ op[2] }}" href="#{{ op[2] }}">ID: {{ op[2] }}</a></b></TD></TR>
 			{% if op[2] != '' %}
-			<TR><TD class="postattachment"><a href="{{ ''.join(['http://', op[2]]) }}">{{ op[2] }}</a></TD></TR>
+			<TR><TD class="postattachment"><a href="{{ ''.join(['http://', op[3]]) }}">{{ op[3] }}</a></TD></TR>
 			{% endif %}
 			<TR><TD class="postcontent">{{ op[1] }}</TD></TR>
 		</table>
