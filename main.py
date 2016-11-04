@@ -7,8 +7,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 sql = SQLAlchemy(app)
 
 c = sql.engine
-c.execute("CREATE TABLE IF NOT EXISTS threads(name VARCHAR(140), post VARCHAR(540),id INT, board VARCHAR(140))")
-c.execute("CREATE TABLE IF NOT EXISTS posts(name VARCHAR(140), post VARCHAR(540), id INT, board VARCHAR(140), parent INT)")
+c.execute("CREATE TABLE IF NOT EXISTS threads(name VARCHAR(140), post VARCHAR(540), attachment VARCHAR(540), id INT, board VARCHAR(140))")
+c.execute("CREATE TABLE IF NOT EXISTS posts(name VARCHAR(140), post VARCHAR(540), attachment VARCHAR(540), id INT, board VARCHAR(140), parent INT)")
 c.execute("CREATE TABLE IF NOT EXISTS boards(name VARCHAR(140), postcount INT, description VARCHAR(140))")
 c.execute("ALTER TABLE boards ALTER COLUMN postcount SET DEFAULT 0")
 boards = c.execute("SELECT name FROM boards").fetchall()
@@ -53,13 +53,11 @@ def showboard(ident):
 		for i in board:
 			realboard.append(i[0])
 			realboard.append(i[1].replace('$_FLASKBOARD_CONTENT$',''))
-		posts = g.db.execute("SELECT name,post,id FROM threads WHERE board = '%s'" % realident).fetchall()
+		posts = g.db.execute("SELECT name,post,attachment,id FROM threads WHERE board = '%s'" % realident).fetchall()
 		print(posts)
 		realpost = []
 		for i in posts:
-			realpost.append([i[0].replace('$_FLASKBOARD_CONTENT$',''),i[1].replace('$_FLASKBOARD_CONTENT$',''),i[2]])
-		print(board)
-		print(realboard)
+			realpost.append([i[0].replace('$_FLASKBOARD_CONTENT$',''),i[1].replace('$_FLASKBOARD_CONTENT$',''),i[2].replace('$_FLASKBOARD_CONTENT$',''),i[3]])
 		return render_template('board.html',posts=realpost,board=realboard,ident=ident)
 		
 	except:
@@ -70,7 +68,7 @@ def showthread(ident,b):
 	sqlb = "$_FLASKBOARD_CONTENT$" + b + "$_FLASKBOARD_CONTENT$"
 	realident = "$_FLASKBOARD_CONTENT$" + ident + "$_FLASKBOARD_CONTENT$"
 	try:
-		op = g.db.execute("SELECT name,post,id FROM threads WHERE id = %s AND board = '%s'" % (ident,sqlb)).fetchall()[0]
+		op = g.db.execute("SELECT name,post,id,attachment FROM threads WHERE id = %s AND board = '%s'" % (ident,sqlb)).fetchall()[0]
 		try:
 			posts = g.db.execute("SELECT * FROM posts WHERE parent = %s AND board = '%s'" % (ident,sqlb)).fetchall()
 		except Exception as e:
@@ -86,17 +84,16 @@ def showthread(ident,b):
 def post(b):
 	name = "$_FLASKBOARD_CONTENT$" + request.form['subject'] + "$_FLASKBOARD_CONTENT$"
 	comment = "$_FLASKBOARD_CONTENT$" + request.form['content'].replace("$_FLASKBOARD_CONTENT$","") + "$_FLASKBOARD_CONTENT$"
+	attachment = "$_FLASKBOARD_CONTENT$" + request.form['attachment'].replace("$_FLASKBOARD_CONTENT$","") + "$_FLASKBOARD_CONTENT$"
 	if name.strip().replace("$_FLASKBOARD_CONTENT$","") == '':
 		name = "$_FLASKBOARD_CONTENT$Anonymous Thread$_FLASKBOARD_CONTENT$"
-	print("Thread subject: " + name)
-	print("Thread content: " + comment)
 	sqlb = "$_FLASKBOARD_CONTENT$" + b + "$_FLASKBOARD_CONTENT$"
 	try:
 		id = int(g.db.execute("SELECT postcount FROM boards WHERE name = %s" % sqlb).fetchall()[0][0])
 	except:
 		id = 0
 	print(id+1)
-	g.db.execute("INSERT INTO threads VALUES(%s,%s,%s,'%s')" % (name,comment,int(id+1),sqlb))
+	g.db.execute("INSERT INTO threads VALUES(%s,%s,%s,%s,'%s')" % (name,comment,attachment,int(id+1),sqlb))
 	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = %s" % sqlb)
 	#g.db.commit()
 	return redirect("/boards/%s/threads/%s" % (str(b),str(id+1)))
@@ -104,11 +101,10 @@ def post(b):
 @app.route('/boards/<b>/threads/postreply/<ident>',methods=['POST'])
 def postreply(b,ident):
 	name = "$_FLASKBOARD_CONTENT$" + request.form['subject'] + "$_FLASKBOARD_CONTENT$"
-	comment = "$_FLASKBOARD_CONTENT$" + request.form['content'].replace("$_FLASKBOARD_CONTENT$","") + "$_FLASKBOARD_CONTENT$"#fix ' insert
+	comment = "$_FLASKBOARD_CONTENT$" + request.form['content'].replace("$_FLASKBOARD_CONTENT$","") + "$_FLASKBOARD_CONTENT$"
+	attachment = "$_FLASKBOARD_CONTENT$" + request.form['attachment'].replace("$_FLASKBOARD_CONTENT$","") + "$_FLASKBOARD_CONTENT$"
 	if name.strip().replace("$_FLASKBOARD_CONTENT$","") == '':
 		name = "$_FLASKBOARD_CONTENT$Anonymous$_FLASKBOARD_CONTENT$"
-	print("Post name: " + name)
-	print("Post content: " + comment)
 	sqlb = "$_FLASKBOARD_CONTENT$" + b + "$_FLASKBOARD_CONTENT$"
 	realident = "$_FLASKBOARD_CONTENT$" + ident + "$_FLASKBOARD_CONTENT$"
 	try:
@@ -116,9 +112,8 @@ def postreply(b,ident):
 	except:
 		id = 0
 	print(id+1)
-	g.db.execute("INSERT INTO posts VALUES(%s,%s,%s,'%s',%s)" % (name,comment,int(id+1),sqlb,int(ident)))
+	g.db.execute("INSERT INTO posts VALUES(%s,%s,%s,%s,'%s',%s)" % (name,comment,attachment,int(id+1),sqlb,int(ident)))
 	g.db.execute("UPDATE boards SET postcount = postcount + 1 WHERE name = %s" % sqlb)
-	#g.db.commit()
 	return redirect("/boards/%s/threads/%s" % (str(b),str(ident)))
 
 if __name__ == '__main__':

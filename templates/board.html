@@ -16,6 +16,10 @@
 			<TD><input type="text" name="subject"></input></TD>
 			</TR>
 			<TR>
+			<TD>Link: </TD>
+			<TD><input type="text" name="attachment"></input></TD>
+			</TR>
+			<TR>
 			<TD>Post content:</TD>
 			</TR>
 		</table>
@@ -25,7 +29,7 @@
 	<hr>
 	{% for i in posts %}
 	<table class="postbody">
-	<TR><TD><b><a class="postname" href="/boards/{{ ident }}/threads/{{ i[2]}}">Subject: {{ i[0] }}</a></b></TD></TR>
+	<TR><TD><b><a class="postname" href="/boards/{{ ident }}/threads/{{ i[3]}}">Subject: {{ i[0] }}</a></b></TD></TR>
 	<TR><TD class="postcontent">{{ i[1] }}</TD></TR>
 	</table>
 	{% endfor %}
