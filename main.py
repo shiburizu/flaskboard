@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, g
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 import json
 import os
 app = Flask(__name__)
